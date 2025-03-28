@@ -32,8 +32,10 @@ class NumberSequenceGeneratorLazy(metaclass = SingletonMetaLazy):
   # - Increment and return the next number
   # - Ensure thread-safety is considered (we'll handle this in Exercise 2)
   def getNextNumber(self):
-     self.__current_number += 1
-     return self.__current_number
+    with self.__class__._lock:
+      self.__current_number += 1
+      next_number = self.__current_number
+    return next_number
   # TODO 3: Optional: Add a method to reset the sequence if needed
   def resetSequence(self):
      self.__current_number = 0
@@ -61,8 +63,10 @@ class NumberSequenceGeneratorEager(metaclass = SingletonMetaEager):
     self.__current_number = 0 # private attribute
 
   def getNextNumber(self):
-    self.__current_number += 1
-    return self.__current_number
+    with self.__class__._lock:
+      self.__current_number += 1
+      next_number = self.__current_number
+    return next_number
 
   def resetSequence(self):
     self.__current_number = 0
